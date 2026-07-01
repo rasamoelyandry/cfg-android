@@ -25,6 +25,8 @@ data class CartItem(
 
 data class OrderUiState(
     val cart: List<CartItem> = emptyList(),
+    val tableId: String? = null,
+    val tableNumber: Int = 0,
     val isLoading: Boolean = false,
     val error: String? = null,
     val orderCreated: OrderDto? = null
@@ -100,6 +102,26 @@ class OrderViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun clearCart() {
+        _uiState.value = _uiState.value.copy(cart = emptyList(), orderCreated = null, error = null)
+    }
+
+    fun setTableId(tableId: String?, tableNumber: Int) {
+        _uiState.value = _uiState.value.copy(tableId = tableId, tableNumber = tableNumber)
+    }
+
+    fun setItemNotes(menuItemId: String, notes: String?) {
+        _uiState.value = _uiState.value.copy(
+            cart = _uiState.value.cart.map {
+                if (it.menuItemId == menuItemId) it.copy(notes = notes) else it
+            }
+        )
+    }
+
+    fun clearError() {
+        _uiState.value = _uiState.value.copy(error = null)
     }
 
     fun clearOrderCreated() {

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CFG POS</string>
+
+    <!-- Auth -->
+    <string name="login_title">Connexion</string>
+    <string name="login_subtitle">Gestion de Restaurant</string>
+    <string name="hint_email_or_phone">Email ou téléphone</string>
+    <string name="hint_password">Mot de passe</string>
+    <string name="btn_login">Se connecter</string>
+    <string name="error_fill_fields">Veuillez remplir tous les champs</string>
+    <string name="error_invalid_credentials">Identifiants incorrects</string>
+    <string name="error_network">Erreur réseau, vérifiez votre connexion</string>
+
+    <!-- Tables -->
+    <string name="tables_title">Tables</string>
+    <string name="table_free">Libre</string>
+    <string name="table_occupied">Occupée</string>
+    <string name="table_capacity">%d pers.</string>
+    <string name="table_number">Table %d</string>
+    <string name="menu_refresh">Rafraîchir</string>
+    <string name="menu_logout">Déconnexion</string>
+    <string name="no_tables">Aucune table configurée</string>
+
+    <!-- Order -->
+    <string name="order_title">Table %d</string>
+    <string name="cart_count">Panier (%d)</string>
+    <string name="no_category_selected">Sélectionner une catégorie</string>
+    <string name="no_menu_items">Aucun article disponible</string>
+    <string name="btn_add">Ajouter</string>
+    <string name="btn_view_cart">Voir le panier</string>
+    <string name="item_unavailable">Indisponible</string>
+
+    <!-- Cart -->
+    <string name="cart_title">Panier</string>
+    <string name="cart_empty">Le panier est vide</string>
+    <string name="hint_customer_name">Nom du client (optionnel)</string>
+    <string name="hint_order_notes">Notes pour la cuisine (optionnel)</string>
+    <string name="total_label">Total</string>
+    <string name="btn_send_kitchen">Envoyer en cuisine</string>
+    <string name="sending_order">Envoi en cours…</string>
+
+    <!-- Payment -->
+    <string name="payment_title">Encaissement</string>
+    <string name="payment_method">Mode de paiement</string>
+    <string name="payment_cash">Espèces</string>
+    <string name="payment_orange">Orange Money</string>
+    <string name="payment_mvola">Mvola</string>
+    <string name="payment_airtel">Airtel Money</string>
+    <string name="hint_reference">Référence transaction (optionnel)</string>
+    <string name="btn_pay">Encaisser %s</string>
+    <string name="payment_success">Paiement enregistré</string>
+    <string name="select_payment_method">Sélectionner un mode de paiement</string>
+
+    <!-- Offline -->
+    <string name="offline_banner">📡 Hors ligne — les actions seront synchronisées</string>
+    <string name="sync_pending">%d action(s) en attente</string>
+
+    <!-- Layout string keys used by XML -->
+    <string name="title_tables">Tables</string>
+    <string name="title_cart">Panier</string>
+    <string name="title_payment">Encaissement</string>
+    <string name="action_refresh">Rafraîchir</string>
+    <string name="action_logout">Déconnexion</string>
+    <string name="offline_mode">📡 Hors ligne — synchronisation en attente</string>
+    <string name="unavailable">Indisponible</string>
+    <string name="label_payment_method">Mode de paiement</string>
+    <string name="method_cash">Espèces</string>
+    <string name="method_card">Carte</string>
+    <string name="method_mvola">Mvola</string>
+    <string name="method_airtel">Airtel</string>
+    <string name="hint_payment_reference">Référence (ex: N° transaction)</string>
+    <string name="btn_pay">Encaisser</string>
+    <string name="btn_done">Retour aux tables</string>
+    <string name="btn_confirm_order">Envoyer en cuisine</string>
+
+    <!-- Generic -->
+    <string name="loading">Chargement…</string>
+    <string name="retry">Réessayer</string>
+    <string name="cancel">Annuler</string>
+    <string name="confirm">Confirmer</string>
+    <string name="back">Retour</string>
+    <string name="error_generic">Une erreur est survenue</string>
+</resources>

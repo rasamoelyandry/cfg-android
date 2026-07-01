@@ -71,6 +71,7 @@ dependencies {
 
     implementation(libs.datastore.prefs)
     implementation(libs.gson)
+    implementation(libs.swiperefresh)
 
     testImplementation(libs.junit)
 }

@@ -55,6 +55,9 @@ hilt-work         = { group = "androidx.hilt", name = "hilt-work", version = "1.
 # DataStore
 datastore-prefs   = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 
+# SwipeRefreshLayout
+swiperefresh      = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version = "1.1.0" }
+
 # Gson
 gson              = { group = "com.google.code.gson", name = "gson", version = "2.10.1" }
 

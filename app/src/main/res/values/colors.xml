@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand -->
+    <color name="primary">#1D4ED8</color>
+    <color name="primary_dark">#1E3A8A</color>
+    <color name="primary_container">#DBEAFE</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="on_primary_container">#1E3A8A</color>
+
+    <!-- Surface / Background -->
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_variant">#F1F5F9</color>
+    <color name="background">#F8FAFC</color>
+    <color name="on_surface">#0F172A</color>
+    <color name="on_surface_variant">#64748B</color>
+    <color name="outline">#CBD5E1</color>
+
+    <!-- Table status -->
+    <color name="table_free">#16A34A</color>
+    <color name="table_free_bg">#DCFCE7</color>
+    <color name="table_occupied">#DC2626</color>
+    <color name="table_occupied_bg">#FEE2E2</color>
+
+    <!-- Payment methods -->
+    <color name="orange_money">#FF6B00</color>
+    <color name="mvola">#E30613</color>
+    <color name="airtel">#B71C1C</color>
+
+    <!-- Status / Feedback -->
+    <color name="success">#16A34A</color>
+    <color name="error">#DC2626</color>
+    <color name="warning">#D97706</color>
+    <color name="offline_bg">#FEF3C7</color>
+    <color name="offline_text">#92400E</color>
+
+    <!-- Misc -->
+    <color name="divider">#E2E8F0</color>
+    <color name="scrim">#80000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- Material3 theme color aliases (static light theme) -->
+    <color name="md_theme_background">#F8FAFC</color>
+    <color name="md_theme_surface">#FFFFFF</color>
+    <color name="md_theme_onSurface">#0F172A</color>
+    <color name="md_theme_onSurfaceVariant">#64748B</color>
+    <color name="md_theme_error">#DC2626</color>
+</resources>
