@@ -9,5 +9,4 @@ captures/
 .cxx/
 *.jks
 *.keystore
-gradle.properties
 !gradle-wrapper.jar
