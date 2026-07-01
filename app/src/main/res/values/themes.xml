@@ -9,7 +9,7 @@
         <item name="colorSurfaceVariant">@color/surface_variant</item>
         <item name="colorOnSurface">@color/on_surface</item>
         <item name="colorOnSurfaceVariant">@color/on_surface_variant</item>
-        <item name="colorBackground">@color/background</item>
+        <item name="android:colorBackground">@color/background</item>
         <item name="colorError">@color/error</item>
         <item name="colorOutline">@color/outline</item>
         <item name="android:statusBarColor">@color/primary_dark</item>
