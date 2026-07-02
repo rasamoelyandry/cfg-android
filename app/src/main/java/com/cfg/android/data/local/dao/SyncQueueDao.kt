@@ -23,3 +23,4 @@ interface SyncQueueDao {
     @Query("DELETE FROM sync_queue WHERE status = 'SYNCED'")
     suspend fun clearSynced()
 }
+     
