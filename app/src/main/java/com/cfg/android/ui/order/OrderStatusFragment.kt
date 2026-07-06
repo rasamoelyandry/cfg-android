@@ -45,7 +45,7 @@ class OrderStatusFragment : Fragment() {
         binding.btnMarkServed.setOnClickListener { viewModel.markAsServed() }
         binding.btnPay.setOnClickListener {
             val total = viewModel.uiState.value.order?.totalAmount ?: 0.0
-            val bundle = bundleOf("orderId" to orderId, "totalAmount" to total)
+            val bundle = bundleOf("orderId" to orderId, "totalAmount" to total.toFloat())
             findNavController().navigate(R.id.action_orderStatus_to_payment, bundle)
         }
 

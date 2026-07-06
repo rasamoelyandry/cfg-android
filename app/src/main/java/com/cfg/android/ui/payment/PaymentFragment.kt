@@ -34,7 +34,7 @@ class PaymentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         orderId = arguments?.getString("orderId")
-        totalAmount = arguments?.getDouble("totalAmount") ?: 0.0
+        totalAmount = (arguments?.getFloat("totalAmount") ?: 0f).toDouble()
 
         binding.tvAmountDue.text = "Montant : ${formatAr(totalAmount)}"
         binding.toolbar.setNavigationOnClickListener { findNavController().popBackStack() }

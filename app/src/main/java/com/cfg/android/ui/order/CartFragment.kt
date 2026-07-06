@@ -79,7 +79,7 @@ class CartFragment : Fragment() {
                         orderViewModel.clearOrderCreated()
                         val bundle = bundleOf(
                             "orderId" to order.id,
-                            "totalAmount" to order.totalAmount
+                            "totalAmount" to order.totalAmount.toFloat()
                         )
                         findNavController().navigate(R.id.action_cart_to_payment, bundle)
                     }
