@@ -46,9 +46,9 @@ class PaymentFragment : Fragment() {
 
     private fun setupMethodButtons() {
         binding.btnCash.setOnClickListener { viewModel.selectMethod("CASH") }
-        binding.btnCard.setOnClickListener { viewModel.selectMethod("CARD") }
+        binding.btnOrangeMoney.setOnClickListener { viewModel.selectMethod("ORANGE_MONEY") }
         binding.btnMvola.setOnClickListener { viewModel.selectMethod("MVOLA") }
-        binding.btnAirtel.setOnClickListener { viewModel.selectMethod("AIRTEL") }
+        binding.btnAirtel.setOnClickListener { viewModel.selectMethod("AIRTEL_MONEY") }
     }
 
     private fun setupPayButton() {
@@ -66,9 +66,9 @@ class PaymentFragment : Fragment() {
                     // Highlight selected method
                     val methods = listOf(
                         "CASH" to binding.btnCash,
-                        "CARD" to binding.btnCard,
+                        "ORANGE_MONEY" to binding.btnOrangeMoney,
                         "MVOLA" to binding.btnMvola,
-                        "AIRTEL" to binding.btnAirtel
+                        "AIRTEL_MONEY" to binding.btnAirtel
                     )
                     methods.forEach { (method, btn) ->
                         btn.isSelected = method == state.selectedMethod

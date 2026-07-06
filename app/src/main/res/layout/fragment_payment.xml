@@ -64,12 +64,12 @@
                     style="@style/Widget.Material3.Button.OutlinedButton" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnCard"
+                    android:id="@+id/btnOrangeMoney"
                     android:layout_width="0dp"
                     android:layout_height="52dp"
                     android:layout_weight="1"
                     android:layout_marginStart="4dp"
-                    android:text="@string/method_card"
+                    android:text="@string/method_orange_money"
                     style="@style/Widget.Material3.Button.OutlinedButton" />
 
             </LinearLayout>
