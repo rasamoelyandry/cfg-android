@@ -21,6 +21,12 @@ interface ApiService {
     @GET("restaurants/{restaurantId}/orders/active")
     suspend fun getActiveOrders(@Path("restaurantId") restaurantId: String): Response<ApiResponse<List<OrderDto>>>
 
+    @GET("restaurants/{restaurantId}/orders/{orderId}")
+    suspend fun getOrder(
+        @Path("restaurantId") restaurantId: String,
+        @Path("orderId") orderId: String
+    ): Response<ApiResponse<OrderDto>>
+
     @POST("restaurants/{restaurantId}/orders")
     suspend fun createOrder(
         @Path("restaurantId") restaurantId: String,

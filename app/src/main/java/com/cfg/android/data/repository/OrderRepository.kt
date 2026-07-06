@@ -25,6 +25,29 @@ class OrderRepository @Inject constructor(
     fun getOrdersFlow(restaurantId: String): Flow<List<OrderEntity>> =
         orderDao.getOrdersFlow(restaurantId)
 
+    suspend fun getOrder(restaurantId: String, orderId: String): Result<OrderDto> = try {
+        val response = apiService.getOrder(restaurantId, orderId)
+        if (response.isSuccessful && response.body()?.data != null) {
+            Result.success(response.body()!!.data!!)
+        } else {
+            Result.failure(Exception("Server error: ${response.code()}"))
+        }
+    } catch (e: Exception) {
+        Result.failure(e)
+    }
+
+    suspend fun updateStatus(restaurantId: String, orderId: String, status: String): Result<OrderDto> = try {
+        val response = apiService.updateOrderStatus(restaurantId, orderId, mapOf("status" to status))
+        if (response.isSuccessful && response.body()?.data != null) {
+            Result.success(response.body()!!.data!!)
+        } else {
+            val msg = response.body()?.message ?: "Erreur serveur (${response.code()})"
+            Result.failure(Exception(msg))
+        }
+    } catch (e: Exception) {
+        Result.failure(e)
+    }
+
     suspend fun createOrder(restaurantId: String, request: CreateOrderRequest): Result<OrderDto> {
         return if (networkMonitor.isOnline.value) {
             try {

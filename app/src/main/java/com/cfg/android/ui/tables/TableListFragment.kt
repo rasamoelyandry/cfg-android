@@ -56,13 +56,24 @@ class TableListFragment : Fragment() {
 
     private fun setupRecyclerView() {
         adapter = TableAdapter { tableWithOrder ->
-            val bundle = bundleOf(
-                "tableId"     to tableWithOrder.table.id,
-                "tableNumber" to tableWithOrder.table.number,
-                "tableLabel"  to tableWithOrder.table.label,
-                "orderId"     to tableWithOrder.activeOrder?.id
-            )
-            findNavController().navigate(R.id.action_tableList_to_order, bundle)
+            val activeOrder = tableWithOrder.activeOrder
+            if (activeOrder != null) {
+                // Table occupee : voir le suivi de la commande en cours (statut, marquer servi, encaisser)
+                val bundle = bundleOf(
+                    "tableNumber" to tableWithOrder.table.number,
+                    "orderId"     to activeOrder.id
+                )
+                findNavController().navigate(R.id.action_tableList_to_orderStatus, bundle)
+            } else {
+                // Table libre : demarrer une nouvelle commande
+                val bundle = bundleOf(
+                    "tableId"     to tableWithOrder.table.id,
+                    "tableNumber" to tableWithOrder.table.number,
+                    "tableLabel"  to tableWithOrder.table.label,
+                    "orderId"     to null
+                )
+                findNavController().navigate(R.id.action_tableList_to_order, bundle)
+            }
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
