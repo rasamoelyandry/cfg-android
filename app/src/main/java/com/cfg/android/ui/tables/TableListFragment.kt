@@ -56,12 +56,13 @@ class TableListFragment : Fragment() {
 
     private fun setupRecyclerView() {
         adapter = TableAdapter { tableWithOrder ->
-            val activeOrder = tableWithOrder.activeOrder
-            if (activeOrder != null) {
-                // Table occupee : voir le suivi de la commande en cours (statut, marquer servi, encaisser)
+            if (tableWithOrder.isOccupied) {
+                // Table occupee : suivi de la commande (statut, marquer servi, encaisser) ou,
+                // si deja payee, juste le bouton pour liberer la table.
                 val bundle = bundleOf(
+                    "tableId"     to tableWithOrder.table.id,
                     "tableNumber" to tableWithOrder.table.number,
-                    "orderId"     to activeOrder.id
+                    "orderId"     to tableWithOrder.activeOrder?.id
                 )
                 findNavController().navigate(R.id.action_tableList_to_orderStatus, bundle)
             } else {

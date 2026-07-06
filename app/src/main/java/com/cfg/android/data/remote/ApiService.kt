@@ -18,6 +18,12 @@ interface ApiService {
     @GET("restaurants/{restaurantId}/tables")
     suspend fun getTables(@Path("restaurantId") restaurantId: String): Response<ApiResponse<List<TableDto>>>
 
+    @PATCH("restaurants/{restaurantId}/tables/{tableId}/release")
+    suspend fun releaseTable(
+        @Path("restaurantId") restaurantId: String,
+        @Path("tableId") tableId: String
+    ): Response<ApiResponse<TableDto>>
+
     @GET("restaurants/{restaurantId}/orders/active")
     suspend fun getActiveOrders(@Path("restaurantId") restaurantId: String): Response<ApiResponse<List<OrderDto>>>
 

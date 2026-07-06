@@ -47,6 +47,7 @@
     <string name="title_payment">Encaissement</string>
     <string name="label_payment_method">Mode de paiement</string>
     <string name="method_cash">Espèces</string>
+    <string name="method_card">Carte</string>
     <string name="method_orange_money">Orange Money</string>
     <string name="method_mvola">Mvola</string>
     <string name="method_airtel">Airtel Money</string>

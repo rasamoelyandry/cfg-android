@@ -34,6 +34,18 @@
         android:padding="16dp"
         android:visibility="gone" />
 
+    <TextView
+        android:id="@+id/tvNoActiveOrder"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Table occupée — commande déjà payée."
+        android:textColor="@color/md_theme_onSurfaceVariant"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:padding="16dp"
+        android:visibility="gone" />
+
     <ScrollView
         android:id="@+id/scrollContent"
         android:layout_width="match_parent"
@@ -111,8 +123,16 @@
             android:id="@+id/btnPay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="Encaisser"
             android:visibility="gone" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnReleaseTable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Libérer la table"
+            style="@style/Widget.Material3.Button.OutlinedButton" />
 
     </LinearLayout>
 

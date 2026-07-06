@@ -43,7 +43,7 @@ data class MenuItemDto(
 data class ModifierDto(val id: String, val name: String, val priceDelta: Double)
 
 // Table
-data class TableDto(val id: String, val number: Int, val label: String?, val capacity: Int)
+data class TableDto(val id: String, val number: Int, val label: String?, val capacity: Int, val occupied: Boolean = false)
 
 // Order
 data class OrderDto(

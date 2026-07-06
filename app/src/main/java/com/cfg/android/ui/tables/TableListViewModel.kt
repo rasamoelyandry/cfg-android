@@ -17,7 +17,9 @@ data class TableWithOrder(
     val table: TableDto,
     val activeOrder: OrderDto? = null
 ) {
-    val isOccupied get() = activeOrder != null
+    // Occupation persistee (independante du paiement) : le serveur libere la table manuellement,
+    // meme si la commande est deja payee (le client peut rester un moment apres avoir paye).
+    val isOccupied get() = table.occupied
 }
 
 data class TableListUiState(

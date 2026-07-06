@@ -46,6 +46,7 @@ class PaymentFragment : Fragment() {
 
     private fun setupMethodButtons() {
         binding.btnCash.setOnClickListener { viewModel.selectMethod("CASH") }
+        binding.btnCard.setOnClickListener { viewModel.selectMethod("CARD") }
         binding.btnOrangeMoney.setOnClickListener { viewModel.selectMethod("ORANGE_MONEY") }
         binding.btnMvola.setOnClickListener { viewModel.selectMethod("MVOLA") }
         binding.btnAirtel.setOnClickListener { viewModel.selectMethod("AIRTEL_MONEY") }
@@ -66,6 +67,7 @@ class PaymentFragment : Fragment() {
                     // Highlight selected method
                     val methods = listOf(
                         "CASH" to binding.btnCash,
+                        "CARD" to binding.btnCard,
                         "ORANGE_MONEY" to binding.btnOrangeMoney,
                         "MVOLA" to binding.btnMvola,
                         "AIRTEL_MONEY" to binding.btnAirtel
