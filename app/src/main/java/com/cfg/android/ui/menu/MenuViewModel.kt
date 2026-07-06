@@ -15,13 +15,23 @@ import javax.inject.Inject
 data class MenuUiState(
     val categories: List<CategoryDto> = emptyList(),
     val selectedCategoryId: String? = null,
+    val searchQuery: String = "",
     val isLoading: Boolean = false,
     val error: String? = null
 ) {
+    val isSearching: Boolean
+        get() = searchQuery.isNotBlank()
+
     val displayedItems: List<MenuItemDto>
-        get() = categories.firstOrNull { it.id == selectedCategoryId }?.items
-            ?: categories.firstOrNull()?.items
-            ?: emptyList()
+        get() {
+            if (isSearching) {
+                val query = searchQuery.trim().lowercase()
+                return categories.flatMap { it.items }.filter { it.name.lowercase().contains(query) }
+            }
+            return categories.firstOrNull { it.id == selectedCategoryId }?.items
+                ?: categories.firstOrNull()?.items
+                ?: emptyList()
+        }
 }
 
 @HiltViewModel
@@ -57,5 +67,9 @@ class MenuViewModel @Inject constructor(
 
     fun selectCategory(categoryId: String) {
         _uiState.value = _uiState.value.copy(selectedCategoryId = categoryId)
+    }
+
+    fun setSearchQuery(query: String) {
+        _uiState.value = _uiState.value.copy(searchQuery = query)
     }
 }

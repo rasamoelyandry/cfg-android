@@ -31,6 +31,8 @@
     <string name="btn_add">Ajouter</string>
     <string name="btn_view_cart">Voir le panier</string>
     <string name="unavailable">Indisponible</string>
+    <string name="hint_search_menu">Rechercher un article…</string>
+    <string name="no_search_results">Aucun article ne correspond à la recherche</string>
 
     <!-- Cart -->
     <string name="title_cart">Panier</string>

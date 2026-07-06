@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -57,6 +58,7 @@ class OrderFragment : Fragment() {
 
         setupToolbar()
         setupRecyclerView()
+        setupSearch()
         observeMenuState()
         observeCartState()
 
@@ -88,13 +90,22 @@ class OrderFragment : Fragment() {
         binding.recyclerMenu.layoutManager = GridLayoutManager(requireContext(), 2)
     }
 
+    private fun setupSearch() {
+        binding.etSearchMenu.doAfterTextChanged { text ->
+            menuViewModel.setSearchQuery(text?.toString().orEmpty())
+        }
+    }
+
     private fun observeMenuState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 menuViewModel.uiState.collect { state ->
                     binding.progressMenu.isVisible = state.isLoading
-                    binding.tvMenuError.isVisible = state.error != null
-                    binding.tvMenuError.text = state.error
+                    binding.scrollCategories.isVisible = !state.isSearching
+
+                    val noResults = state.error == null && state.isSearching && state.displayedItems.isEmpty()
+                    binding.tvMenuError.isVisible = state.error != null || noResults
+                    binding.tvMenuError.text = state.error ?: getString(R.string.no_search_results)
 
                     // Build category chips
                     if (state.categories.isNotEmpty() && binding.chipGroupCategories.childCount == 0) {
