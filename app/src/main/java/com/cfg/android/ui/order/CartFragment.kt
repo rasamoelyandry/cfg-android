@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -75,13 +75,14 @@ class CartFragment : Fragment() {
                     } ?: run { binding.tvError.isVisible = false }
 
                     if (state.orderCreated != null) {
-                        val order = state.orderCreated!!
                         orderViewModel.clearOrderCreated()
-                        val bundle = bundleOf(
-                            "orderId" to order.id,
-                            "totalAmount" to order.totalAmount.toFloat()
-                        )
-                        findNavController().navigate(R.id.action_cart_to_payment, bundle)
+                        Toast.makeText(
+                            requireContext(),
+                            "Commande envoyée en cuisine pour préparation",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        // Retour a la liste des tables (la table apparait desormais occupee)
+                        findNavController().popBackStack(R.id.tableListFragment, false)
                     }
                 }
             }
