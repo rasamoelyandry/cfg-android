@@ -44,6 +44,13 @@ class TableListFragment : Fragment() {
         binding.swipeRefresh.setOnRefreshListener { viewModel.loadTables() }
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Revenir du panier/suivi de commande doit rafraichir l'occupation des tables
+        // sans que le serveur ait a tirer manuellement sur l'ecran.
+        viewModel.loadTables()
+    }
+
     private fun setupToolbar() {
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
