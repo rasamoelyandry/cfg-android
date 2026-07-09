@@ -33,6 +33,8 @@
     <string name="unavailable">Indisponible</string>
     <string name="hint_search_menu">Rechercher un article…</string>
     <string name="no_search_results">Aucun article ne correspond à la recherche</string>
+    <string name="btn_cancel">Annuler</string>
+    <string name="hint_item_notes">Instruction pour la cuisine (optionnel)</string>
 
     <!-- Cart -->
     <string name="title_cart">Panier</string>

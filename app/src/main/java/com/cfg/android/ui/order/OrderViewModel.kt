@@ -20,7 +20,11 @@ data class CartItem(
     val price: Double,
     var quantity: Int = 1,
     var notes: String? = null,
-    val modifierIds: List<String> = emptyList()
+    val modifierIds: List<String> = emptyList(),
+    val modifierNames: List<String> = emptyList(),
+    // Identifiant propre a la ligne de panier : deux clients qui commandent le meme plat avec
+    // des options differentes doivent rester deux lignes distinctes, pas fusionnees.
+    val cartItemId: String = UUID.randomUUID().toString()
 )
 
 data class OrderUiState(
@@ -41,33 +45,52 @@ class OrderViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(OrderUiState())
     val uiState: StateFlow<OrderUiState> = _uiState
 
-    fun addToCart(menuItemId: String, name: String, price: Double) {
+    /**
+     * Ajoute un article au panier. Si un article identique (memes options, memes notes) existe
+     * deja, incremente sa quantite ; sinon cree une nouvelle ligne.
+     */
+    fun addToCart(
+        menuItemId: String,
+        name: String,
+        price: Double,
+        modifierIds: List<String> = emptyList(),
+        modifierNames: List<String> = emptyList(),
+        notes: String? = null
+    ) {
         val cart = _uiState.value.cart.toMutableList()
-        val existing = cart.indexOfFirst { it.menuItemId == menuItemId }
+        val existing = cart.indexOfFirst {
+            it.menuItemId == menuItemId &&
+                it.modifierIds.sorted() == modifierIds.sorted() &&
+                it.notes == notes
+        }
         if (existing >= 0) {
             cart[existing] = cart[existing].copy(quantity = cart[existing].quantity + 1)
         } else {
-            cart.add(CartItem(menuItemId, name, price))
+            cart.add(CartItem(menuItemId, name, price, notes = notes, modifierIds = modifierIds, modifierNames = modifierNames))
         }
         _uiState.value = _uiState.value.copy(cart = cart)
     }
 
-    fun removeFromCart(menuItemId: String) {
+    fun removeFromCart(cartItemId: String) {
         _uiState.value = _uiState.value.copy(
-            cart = _uiState.value.cart.filter { it.menuItemId != menuItemId }
+            cart = _uiState.value.cart.filter { it.cartItemId != cartItemId }
         )
     }
 
-    fun updateQuantity(menuItemId: String, quantity: Int) {
-        if (quantity <= 0) { removeFromCart(menuItemId); return }
+    fun updateQuantity(cartItemId: String, quantity: Int) {
+        if (quantity <= 0) { removeFromCart(cartItemId); return }
         _uiState.value = _uiState.value.copy(
             cart = _uiState.value.cart.map {
-                if (it.menuItemId == menuItemId) it.copy(quantity = quantity) else it
+                if (it.cartItemId == cartItemId) it.copy(quantity = quantity) else it
             }
         )
     }
 
     fun totalAmount(): Double = _uiState.value.cart.sumOf { it.price * it.quantity }
+
+    /** Quantite totale d'un article donne, tous choix d'options confondus (pour le badge sur la tuile menu). */
+    fun quantityFor(menuItemId: String): Int =
+        _uiState.value.cart.filter { it.menuItemId == menuItemId }.sumOf { it.quantity }
 
     fun submitOrder(tableId: String?, customerName: String?, notes: String?) {
         val cart = _uiState.value.cart
@@ -112,10 +135,10 @@ class OrderViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(tableId = tableId, tableNumber = tableNumber)
     }
 
-    fun setItemNotes(menuItemId: String, notes: String?) {
+    fun setItemNotes(cartItemId: String, notes: String?) {
         _uiState.value = _uiState.value.copy(
             cart = _uiState.value.cart.map {
-                if (it.menuItemId == menuItemId) it.copy(notes = notes) else it
+                if (it.cartItemId == cartItemId) it.copy(notes = notes) else it
             }
         )
     }

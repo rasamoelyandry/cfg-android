@@ -46,6 +46,9 @@ class TokenManager @Inject constructor(@ApplicationContext private val context: 
     suspend fun getRestaurantId(): String? =
         context.dataStore.data.map { it[RESTAURANT_ID] }.firstOrNull()
 
+    suspend fun getRole(): String? =
+        context.dataStore.data.map { it[USER_ROLE] }.firstOrNull()
+
     suspend fun clear() {
         context.dataStore.edit { it.clear() }
     }

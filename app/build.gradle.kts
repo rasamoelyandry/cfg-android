@@ -17,6 +17,7 @@ android {
         versionName = "0.1.0"
 
         buildConfigField("String", "API_BASE_URL", "\"${project.findProperty("API_BASE_URL") ?: "https://api.azrtransport.mg/api/v1/"}\"")
+        buildConfigField("String", "WS_BASE_URL", "\"${project.findProperty("WS_BASE_URL") ?: "wss://api.azrtransport.mg/ws/websocket"}\"")
     }
 
     buildTypes {

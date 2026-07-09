@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cfg.android.R
 import com.cfg.android.databinding.FragmentCartBinding
 import com.cfg.android.databinding.ItemCartEntryBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -41,8 +43,9 @@ class CartFragment : Fragment() {
         binding.toolbar.setNavigationOnClickListener { findNavController().popBackStack() }
 
         cartAdapter = CartAdapter(
-            onIncrease = { item -> orderViewModel.updateQuantity(item.menuItemId, item.quantity + 1) },
-            onDecrease = { item -> orderViewModel.updateQuantity(item.menuItemId, item.quantity - 1) }
+            onIncrease = { item -> orderViewModel.updateQuantity(item.cartItemId, item.quantity + 1) },
+            onDecrease = { item -> orderViewModel.updateQuantity(item.cartItemId, item.quantity - 1) },
+            onEditNotes = { item -> showNotesDialog(item) }
         )
         binding.recyclerCart.adapter = cartAdapter
         binding.recyclerCart.layoutManager = LinearLayoutManager(requireContext())
@@ -55,6 +58,22 @@ class CartFragment : Fragment() {
         }
 
         observeState()
+    }
+
+    private fun showNotesDialog(item: CartItem) {
+        val input = EditText(requireContext()).apply {
+            hint = getString(R.string.hint_item_notes)
+            setText(item.notes ?: "")
+            setSelection(text.length)
+        }
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(item.name)
+            .setView(input)
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                orderViewModel.setItemNotes(item.cartItemId, input.text?.toString()?.trim()?.ifEmpty { null })
+            }
+            .setNegativeButton(R.string.btn_cancel, null)
+            .show()
     }
 
     private fun observeState() {
@@ -100,7 +119,8 @@ class CartFragment : Fragment() {
 
 class CartAdapter(
     private val onIncrease: (CartItem) -> Unit,
-    private val onDecrease: (CartItem) -> Unit
+    private val onDecrease: (CartItem) -> Unit,
+    private val onEditNotes: (CartItem) -> Unit
 ) : ListAdapter<CartItem, CartAdapter.VH>(DIFF) {
 
     inner class VH(val binding: ItemCartEntryBinding) : RecyclerView.ViewHolder(binding.root)
@@ -115,14 +135,23 @@ class CartAdapter(
             tvUnitPrice.text = "%,.0f Ar".format(item.price).replace(",", " ")
             tvSubtotal.text = "%,.0f Ar".format(item.price * item.quantity).replace(",", " ")
             tvQty.text = item.quantity.toString()
+
+            val optionsNotesText = buildList {
+                if (item.modifierNames.isNotEmpty()) add("+ ${item.modifierNames.joinToString(", ")}")
+                item.notes?.takeIf { it.isNotBlank() }?.let { add("« $it »") }
+            }.joinToString("  ·  ")
+            tvOptionsNotes.text = optionsNotesText
+            tvOptionsNotes.isVisible = optionsNotesText.isNotEmpty()
+
             btnMinus.setOnClickListener { onDecrease(item) }
             btnPlus.setOnClickListener { onIncrease(item) }
+            root.setOnClickListener { onEditNotes(item) }
         }
     }
 
     companion object {
         val DIFF = object : DiffUtil.ItemCallback<CartItem>() {
-            override fun areItemsTheSame(a: CartItem, b: CartItem) = a.menuItemId == b.menuItemId
+            override fun areItemsTheSame(a: CartItem, b: CartItem) = a.cartItemId == b.cartItemId
             override fun areContentsTheSame(a: CartItem, b: CartItem) = a == b
         }
     }

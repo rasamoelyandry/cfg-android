@@ -2,6 +2,7 @@ package com.cfg.android.data.remote.interceptor
 
 import android.content.Context
 import android.content.Intent
+import com.cfg.android.service.KitchenNotificationService
 import com.cfg.android.ui.auth.LoginActivity
 import com.cfg.android.util.TokenManager
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -30,6 +31,7 @@ class AuthInterceptor @Inject constructor(
         val isLoginCall = request.url.encodedPath.endsWith("/auth/login")
         if (response.code == 401 && !isLoginCall) {
             runBlocking { tokenManager.clear() }
+            KitchenNotificationService.stop(context)
             val intent = Intent(context, LoginActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }

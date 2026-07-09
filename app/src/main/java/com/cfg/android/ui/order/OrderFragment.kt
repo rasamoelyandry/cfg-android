@@ -4,6 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.ScrollView
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -21,8 +25,10 @@ import com.cfg.android.R
 import com.cfg.android.databinding.FragmentOrderBinding
 import com.cfg.android.databinding.ItemMenuItemBinding
 import com.cfg.android.data.remote.dto.MenuItemDto
+import com.cfg.android.data.remote.dto.ModifierDto
 import com.cfg.android.ui.menu.MenuViewModel
 import com.google.android.material.chip.Chip
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -76,18 +82,71 @@ class OrderFragment : Fragment() {
 
     private fun setupRecyclerView() {
         menuAdapter = MenuItemAdapter(
-            onAdd = { item ->
-                orderViewModel.addToCart(item.id, item.name, item.price)
-            },
+            onAdd = { item -> handleAddTapped(item) },
             onRemove = { item ->
-                orderViewModel.removeFromCart(item.id)
+                // Retire la derniere ligne ajoutee pour cet article (les options fines se gerent depuis le panier)
+                val match = orderViewModel.uiState.value.cart.lastOrNull { it.menuItemId == item.id }
+                if (match != null) orderViewModel.updateQuantity(match.cartItemId, match.quantity - 1)
             },
-            getQuantity = { item ->
-                orderViewModel.uiState.value.cart.firstOrNull { it.menuItemId == item.id }?.quantity ?: 0
-            }
+            getQuantity = { item -> orderViewModel.quantityFor(item.id) }
         )
         binding.recyclerMenu.adapter = menuAdapter
         binding.recyclerMenu.layoutManager = GridLayoutManager(requireContext(), 2)
+    }
+
+    private fun handleAddTapped(item: MenuItemDto) {
+        if (item.modifiers.isEmpty()) {
+            orderViewModel.addToCart(item.id, item.name, item.price)
+        } else {
+            showOptionsDialog(item)
+        }
+    }
+
+    private fun showOptionsDialog(item: MenuItemDto) {
+        val context = requireContext()
+        val density = resources.displayMetrics.density
+        fun dp(v: Int) = (v * density).toInt()
+
+        val container = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(dp(24), dp(12), dp(24), 0)
+        }
+
+        val checkBoxes = item.modifiers.map { modifier ->
+            CheckBox(context).apply {
+                text = if (modifier.priceDelta > 0)
+                    "${modifier.name} (+${formatAr(modifier.priceDelta)})"
+                else modifier.name
+                tag = modifier
+            }
+        }
+        checkBoxes.forEach { container.addView(it) }
+
+        val notesInput = EditText(context).apply {
+            hint = getString(R.string.hint_item_notes)
+            setPadding(0, dp(16), 0, 0)
+        }
+        container.addView(notesInput)
+
+        val scroll = ScrollView(context).apply { addView(container) }
+
+        MaterialAlertDialogBuilder(context)
+            .setTitle(item.name)
+            .setView(scroll)
+            .setPositiveButton(R.string.btn_add) { _, _ ->
+                val selected = checkBoxes.filter { it.isChecked }.map { it.tag as ModifierDto }
+                val notes = notesInput.text?.toString()?.trim()?.ifEmpty { null }
+                orderViewModel.addToCart(
+                    menuItemId = item.id,
+                    name = item.name,
+                    price = item.price,
+                    modifierIds = selected.map { it.id },
+                    modifierNames = selected.map { it.name },
+                    notes = notes
+                )
+            }
+            .setNegativeButton(R.string.btn_cancel, null)
+            .show()
     }
 
     private fun setupSearch() {
